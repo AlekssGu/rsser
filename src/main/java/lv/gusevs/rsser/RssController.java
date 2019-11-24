@@ -1,4 +1,4 @@
-package no.kantega.springandreact;
+package lv.gusevs.rsser;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
-public class HelloController {
-    @GetMapping("/api/hello")
+public class RssController {
+    @GetMapping("/rss")
     public String hello() {
-        return "Hello, the time at the server is now " + new Date() + "\n";
+        return "Current time is " + new Date() + "\n";
     }
 }
