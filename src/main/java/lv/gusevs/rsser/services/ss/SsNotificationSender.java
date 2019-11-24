@@ -24,7 +24,7 @@ public class SsNotificationSender {
         return new NotificationBuilder
                 .Builder("Jauns BMW!")
                 .withMessage(prepareMessageText(vehicle))
-                .withAction("Apskatīt: " + vehicle.getLink())
+                .withAction("\nApskatīt: " + vehicle.getLink())
                 .build();
     }
 
@@ -32,7 +32,7 @@ public class SsNotificationSender {
         return "Automašīna: " + vehicle.getMake() + " " + vehicle.getModel() + "\n" +
                 "Gads: " + vehicle.getMakeYear() + "\n" +
                 "Cena: " + vehicle.getPrice() + "\n" +
-                "Image: " + vehicle.getImageUrl();
+                vehicle.getImageUrl();
 
     }
 }

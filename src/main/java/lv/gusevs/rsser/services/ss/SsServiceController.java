@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +33,53 @@ public class SsServiceController {
     public List<Vehicle> scrapeVehicles() {
         Document document = xmlReader.of(ALL_CARS_RSS_FEED).parseSilently();
         List<Node> nodes = document.selectNodes("/rss/channel/item");
-        List<Vehicle> vehicles = new ArrayList<>();
+        List<Vehicle> vehicles = serializeDataIn();
         for (Node node : nodes) {
             Vehicle vehicle = vehicleDataScraper.getVehicle(node);
-            if (vehicleImageIsAvailable(vehicle)) {
+            if (vehicleImageIsAvailable(vehicle) && isNewVehicle(vehicles, vehicle)) {
+                notifyIfBmw(vehicles, vehicle);
                 vehicles.add(vehicle);
-                notifyIfBmw(vehicle);
             }
+        }
+
+        serializeDataOut(vehicles);
+
+        return vehicles;
+    }
+
+    private boolean isNewVehicle(List<Vehicle> vehicles, Vehicle vehicle) {
+        return vehicles.stream().noneMatch(storedVehicle -> storedVehicle.equals(vehicle));
+    }
+
+    private static void serializeDataOut(List<Vehicle> vehicles) {
+        try {
+            String fileName = "vehicles";
+            FileOutputStream fos = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(vehicles);
+            oos.flush();
+            oos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<Vehicle> serializeDataIn() {
+        List<Vehicle> vehicles = new ArrayList<>();
+        try {
+            String fileName = "vehicles";
+            FileInputStream fin = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            vehicles = (ArrayList<Vehicle>) ois.readObject();
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return vehicles;
     }
 
-    private void notifyIfBmw(Vehicle vehicle) {
-        if ("BMW".equals(vehicle.getMake().toUpperCase())) {
+    private void notifyIfBmw(List<Vehicle> vehicles, Vehicle vehicle) {
+        if ("BMW".equals(vehicle.getMake().toUpperCase()) && !vehicles.contains(vehicle)) {
             ssNotificationSender.sendNotification(vehicle);
         }
     }

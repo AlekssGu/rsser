@@ -17,12 +17,10 @@ public class TelegramNotifier implements ItemNotifier {
 
     @Override
     public void newNotification(Notification notification) {
-        String text = notification.getSubject() + "\n" +
-                notification.getMessage() + "\n" +
+        String text = notification.getMessage() + "\n" +
                 notification.getAction();
 
         sendMessage(text);
-        sendMessage(notification.getImageUrl());
     }
 
     private void sendMessage(String message) {

@@ -1,6 +1,9 @@
 package lv.gusevs.rsser.services.ss;
 
-public class Vehicle {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Vehicle implements Serializable {
     private String link;
     private String description;
     private String make;
@@ -11,6 +14,8 @@ public class Vehicle {
     private String makeYear;
     private String motorCapacity;
     private String imageUrl;
+
+    private static final long serialVersionUID = 1239814719;
 
     public String getLink() {
         return link;
@@ -90,5 +95,27 @@ public class Vehicle {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return link.equals(vehicle.link) &&
+                description.equals(vehicle.description) &&
+                make.equals(vehicle.make) &&
+                model.equals(vehicle.model) &&
+                price.equals(vehicle.price) &&
+                datePublished.equals(vehicle.datePublished) &&
+                mileage.equals(vehicle.mileage) &&
+                makeYear.equals(vehicle.makeYear) &&
+                motorCapacity.equals(vehicle.motorCapacity) &&
+                imageUrl.equals(vehicle.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(link, description, make, model, price, datePublished, mileage, makeYear, motorCapacity, imageUrl);
     }
 }
