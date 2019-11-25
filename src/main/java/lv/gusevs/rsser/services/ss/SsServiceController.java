@@ -38,7 +38,7 @@ public class SsServiceController {
         for (Node node : nodes) {
             Vehicle vehicle = vehicleDataScraper.getVehicle(node);
             if (vehicleIsNotEmpty(vehicle) && isNewVehicle(vehicles, vehicle)) {
-                notifyIfBmw(vehicles, vehicle);
+                notifyIfCarMatchesCriteria(vehicle);
                 vehicles.add(vehicle);
             }
         }
@@ -80,10 +80,18 @@ public class SsServiceController {
         return vehicles;
     }
 
-    private void notifyIfBmw(List<Vehicle> vehicles, Vehicle vehicle) {
-        if ("BMW".equals(vehicle.getMake().toUpperCase()) && !vehicles.contains(vehicle)) {
+    private void notifyIfCarMatchesCriteria(Vehicle vehicle) {
+        if (isBMW(vehicle) || isOpelAscona(vehicle)) {
             ssNotificationSender.sendNotification(vehicle);
         }
+    }
+
+    private boolean isOpelAscona(Vehicle vehicle) {
+        return "OPEL".equals(vehicle.getMake().toUpperCase()) && "ASCONA".equals(vehicle.getModel().toUpperCase());
+    }
+
+    private boolean isBMW(Vehicle vehicle) {
+        return "BMW".equals(vehicle.getMake().toUpperCase());
     }
 
     private boolean vehicleIsNotEmpty(Vehicle vehicle) {
