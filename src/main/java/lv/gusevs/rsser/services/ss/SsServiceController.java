@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class SsServiceController {
         List<Vehicle> vehicles = serializeDataIn();
         for (Node node : nodes) {
             Vehicle vehicle = vehicleDataScraper.getVehicle(node);
-            if (vehicleImageIsAvailable(vehicle) && isNewVehicle(vehicles, vehicle)) {
+            if (vehicleIsNotEmpty(vehicle) && isNewVehicle(vehicles, vehicle)) {
                 notifyIfBmw(vehicles, vehicle);
                 vehicles.add(vehicle);
             }
@@ -44,6 +45,7 @@ public class SsServiceController {
 
         serializeDataOut(vehicles);
 
+        vehicles.sort(Comparator.comparing(Vehicle::getDatePublished).reversed());
         return vehicles;
     }
 
@@ -84,7 +86,9 @@ public class SsServiceController {
         }
     }
 
-    private boolean vehicleImageIsAvailable(Vehicle vehicle) {
-        return vehicle.getImageUrl() != null && vehicle.getImageUrl().length() > 0;
+    private boolean vehicleIsNotEmpty(Vehicle vehicle) {
+        return vehicle.getImageUrl() != null && vehicle.getImageUrl().length() > 0
+                && vehicle.getDatePublished() != null
+                && vehicle.getDescription() != null && !vehicle.getDescription().toLowerCase().contains("pērku");
     }
 }

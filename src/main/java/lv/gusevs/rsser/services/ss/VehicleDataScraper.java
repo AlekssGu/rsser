@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static lv.gusevs.utilities.TextHelper.nvl;
+import static lv.gusevs.rsser.utilities.TextHelper.nvl;
 
 @Component
 public class VehicleDataScraper {
@@ -23,6 +23,7 @@ public class VehicleDataScraper {
         description = description.replaceAll("(Apskatīt sludinājumu|€)", "");
         description = description.trim().replaceAll(" +", " ");
 
+//        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault()
         vehicle.setDatePublished(node.selectSingleNode("pubDate").getText());
         vehicle.setMake(getPart(description, "Marka: ([^\\s]+)"));
         vehicle.setModel(getPart(description, "Modelis: (.+) Gads:"));

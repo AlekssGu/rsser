@@ -1,4 +1,4 @@
-package lv.gusevs.utilities;
+package lv.gusevs.rsser.utilities;
 
 public class TextHelper {
 
