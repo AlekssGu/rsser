@@ -1,12 +1,12 @@
 package lv.gusevs.rsser.utilities;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.springframework.stereotype.Component;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 @Component
 public class XmlReader {

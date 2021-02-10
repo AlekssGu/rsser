@@ -1,41 +1,16 @@
 package lv.gusevs.rsser.notifiers;
 
-public class Notification {
+import org.immutables.value.Value;
 
-    private String imageUrl;
-    private String subject;
-    private String message;
-    private String action;
+@Value.Immutable
+public interface Notification {
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+	String imageUrl();
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+	String subject();
 
-    public String getSubject() {
-        return subject;
-    }
+	String message();
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+	String action();
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
 }

@@ -1,15 +1,15 @@
-package lv.gusevs.rsser.services.ss;
+package lv.gusevs.rsser.services.ss.vehicle;
 
-import org.dom4j.Node;
-import org.springframework.stereotype.Component;
+import static lv.gusevs.rsser.utilities.TextHelper.nvl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static lv.gusevs.rsser.utilities.TextHelper.nvl;
+import org.dom4j.Node;
+import org.springframework.stereotype.Component;
 
 @Component
-public class VehicleDataScraper {
+public class VehicleDataParser {
 
     Vehicle getVehicle(Node node) {
         String description = node.selectSingleNode("description").getText();
@@ -23,7 +23,6 @@ public class VehicleDataScraper {
         description = description.replaceAll("(Apskatīt sludinājumu|€)", "");
         description = description.trim().replaceAll(" +", " ");
 
-//        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault()
         vehicle.setDatePublished(node.selectSingleNode("pubDate").getText());
         vehicle.setMake(getPart(description, "Marka: ([^\\s]+)"));
         vehicle.setModel(getPart(description, "Modelis: (.+) Gads:"));

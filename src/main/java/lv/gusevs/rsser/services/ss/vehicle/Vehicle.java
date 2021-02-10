@@ -1,4 +1,4 @@
-package lv.gusevs.rsser.services.ss;
+package lv.gusevs.rsser.services.ss.vehicle;
 
 import java.io.Serializable;
 import java.util.Objects;
