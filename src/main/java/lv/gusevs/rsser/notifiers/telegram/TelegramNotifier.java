@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import lv.gusevs.rsser.notifiers.Notification;
 
 @Component
-public class TelegramNotifier implements ItemNotifier {
+class TelegramNotifier implements ItemNotifier {
 
-    public static final int CHAT_ID = 0;
-    public static final String TELEGRAM_API_URL = "https://api.telegram.org/bot{TELEGRAM_API}/sendMessage";
+    private static final int CHAT_ID = Integer.parseInt(System.getenv().get("TELEGRAM_CHAT_ID"));
+    private static final String TELEGRAM_API_URL = System.getenv().get("TELEGRAM_API_URL");
 
 	@Override
 	public void newNotification(Notification notification) {
