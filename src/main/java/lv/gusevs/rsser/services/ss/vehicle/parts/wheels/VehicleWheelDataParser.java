@@ -1,5 +1,6 @@
 package lv.gusevs.rsser.services.ss.vehicle.parts.wheels;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,7 @@ class VehicleWheelDataParser {
 		description = description.trim().replaceAll(" +", " ");
 
 		return VehiclePart.builder()
-				.datePublished(node.selectSingleNode("pubDate").getText())
+				.datePublished(new Date(node.selectSingleNode("pubDate").getText()))
 				.link(node.selectSingleNode("link").getText())
 				.price(getPart(description, "Cena: (\\d*\\,?\\d*)"))
 				.description(node.selectSingleNode("title").getText())

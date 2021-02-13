@@ -7,25 +7,25 @@ import org.springframework.stereotype.Component;
 
 import lv.gusevs.rsser.notifiers.ImmutableNotification;
 import lv.gusevs.rsser.notifiers.Notification;
-import lv.gusevs.rsser.notifiers.telegram.TelegramNotifier;
+import lv.gusevs.rsser.notifiers.telegram.ItemNotifier;
 import lv.gusevs.rsser.services.ss.vehicle.Vehicle;
 
 @Component
 public class SsNotificationSender {
 
-    private TelegramNotifier telegramNotifier;
+	private final ItemNotifier itemNotifier;
 
-    @Autowired
-    public SsNotificationSender(TelegramNotifier telegramNotifier) {
-        this.telegramNotifier = telegramNotifier;
-    }
+	@Autowired
+    SsNotificationSender(ItemNotifier itemNotifier) {
+		this.itemNotifier = itemNotifier;
+	}
 
     public void sendNotification(Notification notification) {
-    	telegramNotifier.newNotification(notification);
+		itemNotifier.newNotification(notification);
 	}
 
     public void sendNotification(Vehicle vehicle) {
-        telegramNotifier.newNotification(buildNotification(vehicle));
+		itemNotifier.newNotification(buildNotification(vehicle));
     }
 
     private Notification buildNotification(Vehicle vehicle) {
