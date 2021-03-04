@@ -30,7 +30,7 @@ class VehicleWheelDataParser {
 				.datePublished(new Date(node.selectSingleNode("pubDate").getText()))
 				.link(node.selectSingleNode("link").getText())
 				.price(getPart(description, "Cena: (\\d*\\,?\\d*)"))
-				.description(node.selectSingleNode("title").getText())
+				.description(node.selectSingleNode("title").getText().replace("\"", "'"))
 				.imageUrl(imageUrl)
 				.build();
 	}
