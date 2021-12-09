@@ -1,14 +1,14 @@
 package lv.gusevs.rsser.notifiers.telegram;
 
+import lv.gusevs.rsser.notifiers.Notification;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import org.springframework.stereotype.Component;
-
-import lv.gusevs.rsser.notifiers.Notification;
+import java.nio.charset.StandardCharsets;
 
 @Component
 class TelegramNotifier implements ItemNotifier {
@@ -38,11 +38,11 @@ class TelegramNotifier implements ItemNotifier {
 
 			String json = "{ \"chat_id\": \"" + CHAT_ID + "\", \"text\": \"" + message + "\" }";
 
-			os.write(json.getBytes("UTF-8"));
+			os.write(json.getBytes(StandardCharsets.UTF_8));
 			os.close();
 
 			InputStream in = new BufferedInputStream(conn.getInputStream());
-			String result = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+			String result = org.apache.commons.io.IOUtils.toString(in, StandardCharsets.UTF_8);
 
 			in.close();
 			conn.disconnect();

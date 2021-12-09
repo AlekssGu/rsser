@@ -1,22 +1,20 @@
 package lv.gusevs.rsser.services.ss.vehicle;
 
+import lv.gusevs.rsser.data.serialized.DataSerializationService;
+import lv.gusevs.rsser.services.ss.SsNotificationSender;
+import lv.gusevs.rsser.utilities.XmlReader;
+import org.dom4j.Document;
+import org.dom4j.Node;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
-
-import javax.inject.Singleton;
-
-import org.dom4j.Document;
-import org.dom4j.Node;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import lv.gusevs.rsser.configuration.SystemSwitch;
-import lv.gusevs.rsser.data.serialized.DataSerializationService;
-import lv.gusevs.rsser.services.ss.SsNotificationSender;
-import lv.gusevs.rsser.utilities.XmlReader;
 
 @Singleton
 @Service
@@ -29,27 +27,27 @@ public class VehicleService {
 	private static final long YEAR_FROM = 2003L;
 	private static final long YEAR_TO = 2009L;
 
+	@Value("${system.vehicle_scraper_enabled}")
+	private boolean vehicleScraperEnabled;
+
 	private final XmlReader xmlReader;
 	private final VehicleDataParser vehicleDataScraper;
 	private final SsNotificationSender ssNotificationSender;
 	private final DataSerializationService dataSerializationService;
-	private final SystemSwitch systemSwitch;
 
 	@Autowired
 	VehicleService(XmlReader xmlReader,
-			VehicleDataParser vehicleDataScraper,
-			SsNotificationSender ssNotificationSender,
-			DataSerializationService dataSerializationService,
-			SystemSwitch systemSwitch) {
+				   VehicleDataParser vehicleDataScraper,
+				   SsNotificationSender ssNotificationSender,
+				   DataSerializationService dataSerializationService) {
 		this.xmlReader = xmlReader;
 		this.vehicleDataScraper = vehicleDataScraper;
 		this.ssNotificationSender = ssNotificationSender;
 		this.dataSerializationService = dataSerializationService;
-		this.systemSwitch = systemSwitch;
 	}
 
 	public List<Vehicle> getAndNotify() {
-		return systemSwitch.vehicleScraperEnabled() ? processNewVehicles() : Collections.emptyList();
+		return vehicleScraperEnabled ? processNewVehicles() : Collections.emptyList();
 	}
 
 	private List<Vehicle> processNewVehicles() {

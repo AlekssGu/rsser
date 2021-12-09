@@ -1,32 +1,30 @@
 package lv.gusevs.rsser.services.ss.vehicle.parts;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Singleton;
-
+import lv.gusevs.rsser.services.ss.vehicle.parts.wheels.VehicleWheelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import lv.gusevs.rsser.configuration.SystemSwitch;
-import lv.gusevs.rsser.services.ss.vehicle.parts.wheels.VehicleWheelService;
+import javax.inject.Singleton;
+import java.util.Collections;
+import java.util.List;
 
 @Singleton
 @Service
 public class VehiclePartsService {
 
 	private final VehicleWheelService vehicleWheelService;
-	private final SystemSwitch systemSwitch;
+
+	@Value("${system.vehicle_wheel_scraper_enabled}")
+	private boolean vehicleWheelScraperEnabled;
 
 	@Autowired
-	VehiclePartsService(VehicleWheelService vehicleWheelService,
-			SystemSwitch systemSwitch) {
+	VehiclePartsService(VehicleWheelService vehicleWheelService) {
 		this.vehicleWheelService = vehicleWheelService;
-		this.systemSwitch = systemSwitch;
 	}
 
 	public List<VehiclePart> getAndNotify() {
-		return systemSwitch.vehicleWheelScraperEnabled() ? vehicleWheelService.getAndNotify() : Collections.emptyList();
+		return vehicleWheelScraperEnabled ? vehicleWheelService.getAndNotify() : Collections.emptyList();
 	}
 
 }
