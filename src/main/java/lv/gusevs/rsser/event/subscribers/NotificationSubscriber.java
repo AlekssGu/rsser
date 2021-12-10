@@ -1,8 +1,11 @@
-package lv.gusevs.rsser.notifiers.telegram;
+package lv.gusevs.rsser.event.subscribers;
 
-import lv.gusevs.rsser.notifiers.Notification;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,18 +14,30 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 @Component
-class TelegramNotifier implements ItemNotifier {
+public class NotificationSubscriber {
 
     private static final int CHAT_ID = Integer.parseInt(System.getenv().get("TELEGRAM_CHAT_ID"));
     private static final String TELEGRAM_API_URL = System.getenv().get("TELEGRAM_API_URL");
 
-	@Override
-	public void newNotification(Notification notification) {
+	private final EventBus eventBus;
+
+	@Autowired
+	NotificationSubscriber(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+
+	@PostConstruct
+	void init() {
+		eventBus.register(this);
+	}
+
+	@Subscribe
+	private void sendMessage(Notification notification) {
 		sendMessage(messageTextOf(notification));
 	}
 
 	private String messageTextOf(Notification notification) {
-		return notification.message() + "\n" + notification.action();
+		return notification.getMessage() + "\n" + notification.getAction();
 	}
 
 	private void sendMessage(String message) {

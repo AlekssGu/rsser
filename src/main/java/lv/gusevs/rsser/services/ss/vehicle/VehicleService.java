@@ -1,7 +1,7 @@
 package lv.gusevs.rsser.services.ss.vehicle;
 
+import com.google.common.eventbus.EventBus;
 import lv.gusevs.rsser.data.serialized.DataSerializationService;
-import lv.gusevs.rsser.services.ss.SsNotificationSender;
 import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;
@@ -27,23 +27,26 @@ public class VehicleService {
 	private static final long YEAR_FROM = 2003L;
 	private static final long YEAR_TO = 2009L;
 
-	@Value("${system.vehicle_scraper_enabled}")
+	@Value("system.vehicle_scraper_enabled")
 	private boolean vehicleScraperEnabled;
 
 	private final XmlReader xmlReader;
 	private final VehicleDataParser vehicleDataScraper;
-	private final SsNotificationSender ssNotificationSender;
+	private final VehicleNotificationBuilder vehicleNotificationBuilder;
 	private final DataSerializationService dataSerializationService;
+	private final EventBus eventBus;
 
 	@Autowired
 	VehicleService(XmlReader xmlReader,
 				   VehicleDataParser vehicleDataScraper,
-				   SsNotificationSender ssNotificationSender,
-				   DataSerializationService dataSerializationService) {
+				   VehicleNotificationBuilder vehicleNotificationBuilder,
+				   DataSerializationService dataSerializationService,
+				   EventBus eventBus) {
 		this.xmlReader = xmlReader;
 		this.vehicleDataScraper = vehicleDataScraper;
-		this.ssNotificationSender = ssNotificationSender;
+		this.vehicleNotificationBuilder = vehicleNotificationBuilder;
 		this.dataSerializationService = dataSerializationService;
+		this.eventBus = eventBus;
 	}
 
 	public List<Vehicle> getAndNotify() {
@@ -66,7 +69,8 @@ public class VehicleService {
 			if (isNewVehicle(vehicles, vehicle)) {
 				vehicles.add(vehicle);
 				if (shouldNotifyAbout(vehicle)) {
-					ssNotificationSender.sendNotification(vehicle);
+					eventBus.post(vehicle);
+					vehicleNotificationBuilder.notificationOf(vehicle);
 				}
 			}
 		}

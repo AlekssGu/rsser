@@ -1,22 +1,18 @@
 package lv.gusevs.rsser.services.ss.vehicle.parts.wheels;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.inject.Singleton;
-
+import com.google.common.eventbus.EventBus;
+import lv.gusevs.rsser.data.serialized.DataSerializationService;
+import lv.gusevs.rsser.event.subscribers.Notification;
+import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePart;
+import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.gusevs.rsser.data.serialized.DataSerializationService;
-import lv.gusevs.rsser.notifiers.ImmutableNotification;
-import lv.gusevs.rsser.notifiers.Notification;
-import lv.gusevs.rsser.services.ss.SsNotificationSender;
-import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePart;
-import lv.gusevs.rsser.utilities.XmlReader;
+import javax.inject.Singleton;
+import java.util.Comparator;
+import java.util.List;
 
 @Singleton
 @Service
@@ -28,23 +24,21 @@ public class VehicleWheelService {
 	private final XmlReader xmlReader;
 	private final DataSerializationService dataSerializationService;
 	private final VehicleWheelDataParser vehicleWheelDataParser;
-	private final SsNotificationSender ssNotificationSender;
+	private final EventBus eventBus;
 
 	@Autowired
 	VehicleWheelService(XmlReader xmlReader,
-			DataSerializationService dataSerializationService,
-			VehicleWheelDataParser vehicleWheelDataParser,
-			SsNotificationSender ssNotificationSender) {
+						DataSerializationService dataSerializationService,
+						VehicleWheelDataParser vehicleWheelDataParser,
+						EventBus eventBus) {
 		this.xmlReader = xmlReader;
 		this.dataSerializationService = dataSerializationService;
 		this.vehicleWheelDataParser = vehicleWheelDataParser;
-		this.ssNotificationSender = ssNotificationSender;
+		this.eventBus = eventBus;
 	}
 
 	public List<VehiclePart> getAndNotify() {
-		List<VehiclePart> wheels = new ArrayList<>();
-		wheels.addAll(retrieveAndNotifyFrom(BMW_WHEELS_RSS_FEED));
-		return wheels;
+		return retrieveAndNotifyFrom(BMW_WHEELS_RSS_FEED);
 	}
 
 	private List<VehiclePart> retrieveAndNotifyFrom(String feed) {
@@ -55,7 +49,7 @@ public class VehicleWheelService {
 			VehiclePart vehicleWheel = vehicleWheelDataParser.parse(node);
 			if (isNew(vehicleWheels, vehicleWheel)) {
 				vehicleWheels.add(vehicleWheel);
-				ssNotificationSender.sendNotification(notificationOf(vehicleWheel));
+				eventBus.post(notificationOf(vehicleWheel));
 			}
 		}
 		dataSerializationService.serializeDataOut(vehicleWheels, FILENAME_VEHICLE_NAMES);
@@ -64,7 +58,7 @@ public class VehicleWheelService {
 	}
 
 	private Notification notificationOf(VehiclePart vehicleWheel) {
-		return ImmutableNotification.builder()
+		return Notification.builder()
 				.subject("Jauni diski!")
 				.message(messageOf(vehicleWheel))
 				.action("\nApskatīt: " + vehicleWheel.getLink())

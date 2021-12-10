@@ -15,7 +15,7 @@ public class VehiclePartsService {
 
 	private final VehicleWheelService vehicleWheelService;
 
-	@Value("${system.vehicle_wheel_scraper_enabled}")
+	@Value("system.vehicle_wheel_scraper_enabled")
 	private boolean vehicleWheelScraperEnabled;
 
 	@Autowired
