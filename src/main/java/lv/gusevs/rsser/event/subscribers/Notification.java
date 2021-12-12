@@ -8,11 +8,8 @@ import lombok.Getter;
 public class Notification {
 
 	private final String imageUrl;
-
 	private final String subject;
-
 	private final String message;
-
 	private final String action;
 
 }

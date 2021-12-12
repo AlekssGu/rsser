@@ -1,7 +1,7 @@
 package lv.gusevs.rsser.services.ss.vehicle;
 
-import com.google.common.eventbus.EventBus;
-import lv.gusevs.rsser.data.serialized.DataSerializationService;
+import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.ss.vehicle.data.VehicleDataService;
 import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;
@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,84 +18,57 @@ import java.util.stream.Stream;
 @Service
 public class VehicleService {
 
-	private static final String BMW_5SERIES_RSS_FEED = "https://www.ss.lv/lv/transport/cars/bmw/5-series/sell/rss/";
-	private static final String BMW_3SERIES_RSS_FEED = "https://www.ss.lv/lv/transport/cars/bmw/3-series/sell/rss/";
+    private static final String BMW_5SERIES_RSS_FEED = "https://www.ss.lv/lv/transport/cars/bmw/5-series/sell/rss/";
+    private static final String BMW_3SERIES_RSS_FEED = "https://www.ss.lv/lv/transport/cars/bmw/3-series/sell/rss/";
 
-	private static final long MAX_PRICE = 5500L;
-	private static final long YEAR_FROM = 2003L;
-	private static final long YEAR_TO = 2009L;
+    @Value("#{new Boolean('${system.vehicle_scraper_enabled}')}")
+    private boolean vehicleScraperEnabled;
 
-	@Value("system.vehicle_scraper_enabled")
-	private boolean vehicleScraperEnabled;
+    private final XmlReader xmlReader;
+    private final VehicleDataParser vehicleDataScraper;
+    private final VehicleDataService vehicleDataService;
 
-	private final XmlReader xmlReader;
-	private final VehicleDataParser vehicleDataScraper;
-	private final VehicleNotificationBuilder vehicleNotificationBuilder;
-	private final DataSerializationService dataSerializationService;
-	private final EventBus eventBus;
+    @Autowired
+    VehicleService(XmlReader xmlReader,
+                   VehicleDataParser vehicleDataScraper,
+                   VehicleDataService vehicleDataService) {
+        this.xmlReader = xmlReader;
+        this.vehicleDataScraper = vehicleDataScraper;
+        this.vehicleDataService = vehicleDataService;
+    }
 
-	@Autowired
-	VehicleService(XmlReader xmlReader,
-				   VehicleDataParser vehicleDataScraper,
-				   VehicleNotificationBuilder vehicleNotificationBuilder,
-				   DataSerializationService dataSerializationService,
-				   EventBus eventBus) {
-		this.xmlReader = xmlReader;
-		this.vehicleDataScraper = vehicleDataScraper;
-		this.vehicleNotificationBuilder = vehicleNotificationBuilder;
-		this.dataSerializationService = dataSerializationService;
-		this.eventBus = eventBus;
-	}
+    public List<Vehicle> newAds() {
+        scrapeNewAds(); // TODO Run this in background, scrape new ads and save to the database
+        return vehicleScraperEnabled ? getNewAds() : Collections.emptyList();
+    }
 
-	public List<Vehicle> getAndNotify() {
-		return vehicleScraperEnabled ? processNewVehicles() : Collections.emptyList();
-	}
+    public void scrapeNewAds() {
+        Stream
+                .of(BMW_3SERIES_RSS_FEED, BMW_5SERIES_RSS_FEED)
+                .forEach(this::scrapeNewAds);
+    }
 
-	private List<Vehicle> processNewVehicles() {
-		List<Vehicle> vehicles = new ArrayList<>();
-		Stream.of(BMW_3SERIES_RSS_FEED, BMW_5SERIES_RSS_FEED)
-				.forEach(feed -> vehicles.addAll(retrieveAndNotifyFrom(feed)));
-		return vehicles;
-	}
+    private List<Vehicle> getNewAds() {
+        return vehicleDataService.getLatest();
+    }
 
-	private List<Vehicle> retrieveAndNotifyFrom(String feed) {
-		Document document = xmlReader.of(feed).parseSilently();
-		List<Node> nodes = document.selectNodes("/rss/channel/item");
-		List<Vehicle> vehicles = dataSerializationService.serializeDataIn("vehicles");
-		for (Node node : nodes) {
-			Vehicle vehicle = vehicleDataScraper.getVehicle(node);
-			if (isNewVehicle(vehicles, vehicle)) {
-				vehicles.add(vehicle);
-				if (shouldNotifyAbout(vehicle)) {
-					eventBus.post(vehicle);
-					vehicleNotificationBuilder.notificationOf(vehicle);
-				}
-			}
-		}
-		dataSerializationService.serializeDataOut(vehicles, "vehicles");
-		vehicles.sort(Comparator.comparing(Vehicle::getDatePublished).reversed());
-		return vehicles;
-	}
+    private void scrapeNewAds(String feed) {
+        Document document = xmlReader.of(feed).parseSilently();
+        List<Node> nodes = document.selectNodes("/rss/channel/item");
+        for (Node node : nodes) {
+            getAndSaveNewVehicleOf(node);
+        }
+    }
 
-	private boolean shouldNotifyAbout(Vehicle vehicle) {
-		return vehiclePriceInRange(vehicle, MAX_PRICE) &&
-				vehicleYearInRange(vehicle, YEAR_FROM, YEAR_TO);
-	}
+    private void getAndSaveNewVehicleOf(Node node) {
+        Vehicle vehicle = vehicleDataScraper.getVehicle(node);
+        if (isNew(vehicle)) {
+            vehicleDataService.save(vehicle);
+        }
+    }
 
-	private boolean vehicleYearInRange(Vehicle vehicle, long yearFrom, long yearTo) {
-		long vehicleMakeYear = Long.parseLong(vehicle.getMakeYear());
-		return vehicleMakeYear >= yearFrom && vehicleMakeYear <= yearTo;
-	}
-
-	private boolean vehiclePriceInRange(Vehicle vehicle, long maxPrice) {
-		String vehiclePrice = vehicle.getPrice().replace(",", "");
-		vehiclePrice = vehiclePrice.replace(" ", "");
-		long price = Long.parseLong(vehiclePrice);
-		return price <= maxPrice;
-	}
-
-	private boolean isNewVehicle(List<Vehicle> vehicles, Vehicle vehicle) {
-		return vehicles.stream().noneMatch(storedVehicle -> storedVehicle.equals(vehicle));
-	}
+    private boolean isNew(Vehicle vehicle) {
+        return vehicleDataService.isNew(vehicle);
+    }
 
 }

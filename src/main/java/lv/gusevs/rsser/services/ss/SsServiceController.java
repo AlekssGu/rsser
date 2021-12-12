@@ -1,16 +1,15 @@
 package lv.gusevs.rsser.services.ss;
 
-import java.util.List;
-
+import lv.gusevs.rsser.services.ss.vehicle.VehicleService;
+import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePart;
+import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePartsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lv.gusevs.rsser.services.ss.vehicle.Vehicle;
-import lv.gusevs.rsser.services.ss.vehicle.VehicleService;
-import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePart;
-import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePartsService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ss")
@@ -28,7 +27,7 @@ class SsServiceController {
 
 	@GetMapping("/cars")
 	public List<Vehicle> scrapeVehicles() {
-		return vehicleService.getAndNotify();
+		return vehicleService.newAds();
 	}
 
 	@GetMapping("/car-wheels")
