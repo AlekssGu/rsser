@@ -3,6 +3,8 @@ package lv.gusevs.rsser.services.ss.vehicle.data;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Builder
 @Getter
 public class Vehicle {
@@ -12,7 +14,7 @@ public class Vehicle {
     private final String make;
     private final String model;
     private final String price;
-    private final String datePublished;
+    private final Date datePublished;
     private final String mileage;
     private final String makeYear;
     private final String motorCapacity;

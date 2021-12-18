@@ -3,6 +3,7 @@ package lv.gusevs.rsser.services.ss;
 import lv.gusevs.rsser.services.ss.vehicle.VehicleService;
 import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
 import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
+import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,13 @@ import java.util.List;
 class SsServiceController {
 
 	private final VehicleService vehicleService;
+	private final VehicleWheelService vehicleWheelService;
 
 	@Autowired
-	SsServiceController(VehicleService vehicleService) {
+	SsServiceController(VehicleService vehicleService,
+						VehicleWheelService vehicleWheelService) {
 		this.vehicleService = vehicleService;
+		this.vehicleWheelService = vehicleWheelService;
 	}
 
 	@GetMapping("/cars")
@@ -28,7 +32,7 @@ class SsServiceController {
 
 	@GetMapping("/car-wheels")
 	public List<VehicleWheel> getLatestVehicleWheels() {
-		return vehicleService.newWheelAds();
+		return vehicleWheelService.newAds();
 	}
 
 }

@@ -1,6 +1,7 @@
 package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
 
 import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
+import lv.gusevs.rsser.utilities.DateHelper;
 import org.dom4j.Node;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ class VehicleWheelDataParser {
 		description = description.trim().replaceAll(" +", " ");
 
 		return VehicleWheel.builder()
-				.datePublished(dateOf(node.selectSingleNode("pubDate").getText()))
+				.datePublished(dateOf(node))
 				.link(node.selectSingleNode("link").getText())
 				.price(getPart(description, "Cena: (\\d*\\,?\\d*)"))
 				.description(node.selectSingleNode("title").getText().replace("\"", "'"))
@@ -33,11 +34,9 @@ class VehicleWheelDataParser {
 				.build();
 	}
 
-	private Date dateOf(String date) {
-		//new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-		//String dateInString = "7-Jun-2013";
-		//Date date = formatter.parse(dateInString);
-		return new Date(date);
+	private Date dateOf(Node node) {
+		String rawDate = node.selectSingleNode("pubDate").getText();
+		return DateHelper.of(rawDate);
 	}
 
 	private String getPart(String description, String regexPattern) {

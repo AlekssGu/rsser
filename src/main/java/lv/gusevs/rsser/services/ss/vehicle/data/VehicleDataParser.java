@@ -1,8 +1,10 @@
 package lv.gusevs.rsser.services.ss.vehicle.data;
 
+import lv.gusevs.rsser.utilities.DateHelper;
 import org.dom4j.Node;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +24,7 @@ class VehicleDataParser {
                 .link(node.selectSingleNode("link").getText())
                 .description(description)
                 .imageUrl(imageUrl)
-                .datePublished(node.selectSingleNode("pubDate").getText())
+                .datePublished(dateOf(node))
                 .make(getPart(cleanDescription, "Marka: ([^\\s]+)"))
                 .model(getPart(cleanDescription, "Modelis: (.+) Gads:"))
                 .makeYear(getPart(cleanDescription, "Gads: (\\d{4})"))
@@ -30,6 +32,11 @@ class VehicleDataParser {
                 .motorCapacity(getPart(cleanDescription, "Tilp.: (\\d\\.\\d(\\w)*)"))
                 .mileage(nvl(getPart(cleanDescription, "(\\d*\\stūkst.)"), "Nav norādīts"))
                 .build();
+    }
+
+    private Date dateOf(Node node) {
+        String rawDate = node.selectSingleNode("pubDate").getText();
+        return DateHelper.of(rawDate);
     }
 
     private String getPart(String description, String regexPattern) {

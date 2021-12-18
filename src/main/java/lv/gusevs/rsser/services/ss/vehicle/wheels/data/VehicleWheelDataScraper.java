@@ -5,6 +5,7 @@ import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class VehicleWheelDataScraper {
     private final VehicleWheelDataParser vehicleWheelDataParser;
     private final VehicleWheelDataService vehicleWheelDataService;
 
+    @Value("#{new Boolean('${system.vehicle_wheel_scraper_enabled}')}")
+    private boolean vehicleWheelScraperEnabled;
+
     @Autowired
     VehicleWheelDataScraper(XmlReader xmlReader,
                             VehicleWheelDataParser vehicleWheelDataParser,
@@ -29,8 +33,10 @@ public class VehicleWheelDataScraper {
     }
 
     public void scrapeNewAds() {
-        Stream.of(BMW_WHEELS_RSS_FEED)
-                        .forEach(this::getAndSaveNewVehicleWheels);
+        if (vehicleWheelScraperEnabled) {
+            Stream.of(BMW_WHEELS_RSS_FEED)
+                    .forEach(this::getAndSaveNewVehicleWheels);
+        }
     }
 
     private void getAndSaveNewVehicleWheels(String feed) {

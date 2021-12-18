@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -19,7 +20,7 @@ class VehicleData {
     private String make;
     private String model;
     private String price;
-    private String datePublished;
+    private Date datePublished;
     private String mileage;
     private String makeYear;
     private String motorCapacity;

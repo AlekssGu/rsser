@@ -4,6 +4,7 @@ import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public class VehicleDataScraper {
     private final VehicleDataParser vehicleDataParser;
     private final VehicleDataService vehicleDataService;
 
+    @Value("#{new Boolean('${system.vehicle_scraper_enabled}')}")
+    private boolean vehicleScraperEnabled;
+
     @Autowired
     VehicleDataScraper(XmlReader xmlReader,
                        VehicleDataParser vehicleDataParser,
@@ -29,9 +33,11 @@ public class VehicleDataScraper {
     }
 
     public void scrapeNewAds() {
-        Stream
-                .of(BMW_3SERIES_RSS_FEED, BMW_5SERIES_RSS_FEED)
-                .forEach(this::scrapeNewAds);
+        if (vehicleScraperEnabled) {
+            Stream
+                    .of(BMW_3SERIES_RSS_FEED, BMW_5SERIES_RSS_FEED)
+                    .forEach(this::scrapeNewAds);
+        }
     }
 
     private void scrapeNewAds(String feed) {
