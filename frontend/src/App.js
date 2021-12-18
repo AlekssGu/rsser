@@ -1,59 +1,28 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 import logo from './logo.png';
 import './App.css';
+import Vehicle from './components/Vehicle';
+import VehicleWheel from './components/VehicleWheel';
 
 class App extends Component {
 
-    state = {};
-
-    componentDidMount() {
-        this.refreshRate = 1000000;
-        this.vehicles();
-        this.vehicleWheels();
-        this.timer = setInterval(() => this.vehicles(), this.refreshRate);
-        this.timer = setInterval(() => this.vehicleWheels(), this.refreshRate);
+    state = {
+        vehicleData: [],
+        vehicleWheelData: []
     }
 
-    async vehicleWheels() {
-        fetch('/ss/car-wheels/')
-            .then(response => response.json())
-            .then(response => response.map(element => {
-                return <div className="car-wheel">
-                    <a href={element.link}><img src={element.imageUrl} /></a>
-                    <div className="vehicle-info">
-                        <p><b>Pievienots:</b> {element.datePublished}</p>
-                        <p><b>Cena:</b> {element.price} EUR</p>
-                        <p><b><a href={element.link}>Apskatīt</a></b></p>
-                    </div>
-                    <hr/>
-                </div>
-            }))
-            .then(vehicleWheels => {
-                this.setState({vehicleWheels: vehicleWheels});
+    componentDidMount() {
+        axios.get('/ss/cars/')
+            .then(response => {
+                this.setState({ vehicleData: response.data });
             });
-    };
 
-    async vehicles() {
-        fetch('/ss/cars/')
-            .then(response => response.json())
-            .then(response => response.map(element => {
-                return <div className="vehicle">
-                    <a href={element.link}><img src={element.imageUrl} /></a>
-                    <div className="vehicle-info">
-                        <p><b>Pievienots:</b> {element.datePublished}</p>
-                        <p><b>Automašīna:</b> {element.make} {element.model}</p>
-                        <p><b>Izlaiduma gads:</b> {element.makeYear}</p>
-                        <p><b>Cena:</b> {element.price} EUR</p>
-                        <p><b>Motora tilp.:</b> {element.motorCapacity}</p>
-                        <p><b>Nobraukums:</b> {element.mileage}</p>
-                    </div>
-                    <hr/>
-                </div>
-            }))
-            .then(vehicles => {
-                this.setState({vehicles: vehicles});
+        axios.get('/ss/car-wheels/')
+            .then(response => {
+                this.setState({ vehicleWheelData: response.data });
             });
-    };
+    }
 
     render() {
         return (
@@ -83,10 +52,14 @@ class App extends Component {
                     <div className="row">
                         <div className="tab-content" id="myTabContent">
                             <div className="tab-pane fade show active" id="wheels" role="tabpanel" aria-labelledby="home-tab">
-                                <div className="vehicleWheels">{this.state.vehicleWheels}</div>
+                                <div className="vehicleWheels">
+                                    <VehicleWheel vehicleWheelData={this.state.vehicleWheelData} />
+                                </div>
                             </div>
                             <div className="tab-pane fade" id="cars" role="tabpanel" aria-labelledby="profile-tab">
-                                <div className="vehicles">{this.state.vehicles}</div>
+                                <div className="vehicles">
+                                    <Vehicle vehicleData={this.state.vehicleData} />
+                                </div>
                             </div>
                             <div className="tab-pane fade" id="real-estate" role="tabpanel" aria-labelledby="contact-tab">...</div>
                         </div>
