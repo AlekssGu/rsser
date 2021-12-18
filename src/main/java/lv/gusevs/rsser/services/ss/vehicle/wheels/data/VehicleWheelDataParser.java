@@ -1,38 +1,43 @@
-package lv.gusevs.rsser.services.ss.vehicle.parts.wheels;
+package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
 
-import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Singleton;
-
+import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
 import org.dom4j.Node;
 import org.springframework.stereotype.Component;
 
-import lv.gusevs.rsser.services.ss.vehicle.parts.VehiclePart;
+import javax.inject.Singleton;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Singleton
 @Component
 class VehicleWheelDataParser {
 
-	VehiclePart parse(Node node) {
+	VehicleWheel getVehicleWheel(Node node) {
 		return vehiclePartOf(node);
 	}
 
-	private VehiclePart vehiclePartOf(Node node) {
+	private VehicleWheel vehiclePartOf(Node node) {
 		String description = node.selectSingleNode("description").getText();
 		String imageUrl = getPart(description, "src\\s*=\\s*\"(.+?)\"");
-		description = description.replaceAll("\\<.*?\\>", " ");
+		description = description.replaceAll("<.*?>", " ");
 		description = description.replaceAll("(Apskatīt sludinājumu|€)", "");
 		description = description.trim().replaceAll(" +", " ");
 
-		return VehiclePart.builder()
-				.datePublished(new Date(node.selectSingleNode("pubDate").getText()))
+		return VehicleWheel.builder()
+				.datePublished(dateOf(node.selectSingleNode("pubDate").getText()))
 				.link(node.selectSingleNode("link").getText())
 				.price(getPart(description, "Cena: (\\d*\\,?\\d*)"))
 				.description(node.selectSingleNode("title").getText().replace("\"", "'"))
 				.imageUrl(imageUrl)
 				.build();
+	}
+
+	private Date dateOf(String date) {
+		//new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+		//String dateInString = "7-Jun-2013";
+		//Date date = formatter.parse(dateInString);
+		return new Date(date);
 	}
 
 	private String getPart(String description, String regexPattern) {

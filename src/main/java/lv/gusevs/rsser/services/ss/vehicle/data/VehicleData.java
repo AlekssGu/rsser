@@ -2,21 +2,18 @@ package lv.gusevs.rsser.services.ss.vehicle.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "vehicles")
 @Getter
 @Setter
+@ToString
 class VehicleData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
-
+    private String id;
     private String link;
     private String description;
     private String make;

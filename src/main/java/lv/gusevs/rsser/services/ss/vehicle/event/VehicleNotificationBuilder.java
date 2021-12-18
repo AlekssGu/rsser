@@ -1,4 +1,4 @@
-package lv.gusevs.rsser.services.ss.vehicle;
+package lv.gusevs.rsser.services.ss.vehicle.event;
 
 import lv.gusevs.rsser.event.subscribers.Notification;
 import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;

@@ -1,7 +1,6 @@
 package lv.gusevs.rsser.services.ss.vehicle.data;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-interface VehicleRepository extends JpaRepository<VehicleData, Long> {
-
+interface VehicleRepository extends MongoRepository<VehicleData, String> {
 }

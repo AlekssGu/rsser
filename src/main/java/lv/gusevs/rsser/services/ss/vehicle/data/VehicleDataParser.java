@@ -1,6 +1,5 @@
-package lv.gusevs.rsser.services.ss.vehicle;
+package lv.gusevs.rsser.services.ss.vehicle.data;
 
-import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
 import org.dom4j.Node;
 import org.springframework.stereotype.Component;
 
@@ -10,12 +9,12 @@ import java.util.regex.Pattern;
 import static lv.gusevs.rsser.utilities.TextHelper.nvl;
 
 @Component
-public class VehicleDataParser {
+class VehicleDataParser {
 
     Vehicle getVehicle(Node node) {
         String description = node.selectSingleNode("description").getText();
         String imageUrl = getPart(description, "src\\s*=\\s*\"(.+?)\"");
-        String cleanDescription = description.replaceAll("\\<.*?\\>", " ");
+        String cleanDescription = description.replaceAll("<.*?>", " ");
         cleanDescription = cleanDescription.replaceAll("(Apskatīt sludinājumu|€)", "");
         cleanDescription = cleanDescription.trim().replaceAll(" +", " ");
 
