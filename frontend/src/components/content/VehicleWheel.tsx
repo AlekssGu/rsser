@@ -1,7 +1,7 @@
 import React from 'react';
 
-export function VehicleWheel(props: { vehicleWheelData: any[]; }) {
-    const vehicleWheels = props.vehicleWheelData.map((element, index) => (
+export default function VehicleWheel(element: any, index: number) {
+    return (
         <div className="car-wheel" key={index}>
             <a href={element.link}><img src={element.imageUrl} alt="vehicle-wheel" /></a>
             <div className="vehicle-info">
@@ -11,8 +11,5 @@ export function VehicleWheel(props: { vehicleWheelData: any[]; }) {
             </div>
             <hr />
         </div>
-    ));
-    return vehicleWheels;
+    );
 };
-
-export default VehicleWheel;
