@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class TelegramMessenger {
 
-    private static final String CHAT_ID = System.getenv().get("TELEGRAM_CHAT_ID");
-
     private final ShrimpBot shrimpBot;
 
     @Autowired
@@ -22,15 +20,19 @@ public class TelegramMessenger {
         try {
             shrimpBot.execute(sendActionOf(message));
         } catch (TelegramApiException exception) {
-            throw new RuntimeException("Failed sending message to Telegram", exception);
+            throw new TelegramMessageSendingFailed(exception);
         }
     }
 
     private SendMessage sendActionOf(String message) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(CHAT_ID);
+        sendMessage.setChatId(chatId());
         sendMessage.setText(message);
         return sendMessage;
+    }
+
+    private String chatId() {
+        return System.getProperty("TELEGRAM_CHAT_ID");
     }
 
 }

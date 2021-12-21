@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class NotificationSubscriber {
+class NotificationSubscriber {
 
 	private final EventBus eventBus;
 	private final TelegramMessenger telegramMessenger;
@@ -27,7 +27,7 @@ public class NotificationSubscriber {
 	}
 
 	@Subscribe
-	private void sendMessage(Notification notification) {
+	void sendMessage(Notification notification) {
 		telegramMessenger.sendMessage(messageTextOf(notification));
 	}
 
