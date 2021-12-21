@@ -25,7 +25,7 @@ class DefaultVehicleDataService implements VehicleDataService {
 
     @Override
     public List<Vehicle> getLatest() {
-        return vehicleRepository.findAll(Sort.by(Sort.Order.desc("id")))
+        return latestVehicleData()
                 .stream()
                 .map(VehicleMapper::toVehicle)
                 .collect(Collectors.toList());
@@ -42,6 +42,10 @@ class DefaultVehicleDataService implements VehicleDataService {
     public boolean isNew(Vehicle vehicle) {
         VehicleData vehicleData = VehicleMapper.mapToData(vehicle);
         return !vehicleRepository.exists(Example.of(vehicleData));
+    }
+
+    private List<VehicleData> latestVehicleData() {
+        return vehicleRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
     private void postNotificationAbout(Vehicle vehicle) {
