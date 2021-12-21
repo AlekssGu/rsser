@@ -1,5 +1,4 @@
 .idea
 *.iml
 target
-vehicles
-vehicleWheels
+.DS_Store
