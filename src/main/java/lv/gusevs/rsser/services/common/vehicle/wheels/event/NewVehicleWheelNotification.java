@@ -1,8 +1,8 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels.event;
+package lv.gusevs.rsser.services.common.vehicle.wheels.event;
 
 import lombok.Builder;
 import lombok.Getter;
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheel;
 
 @Builder
 @Getter

@@ -1,6 +1,7 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels;
+package lv.gusevs.rsser.services.common.vehicle.wheels;
 
-import lv.gusevs.rsser.services.ss.vehicle.wheels.data.VehicleWheelDataService;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheel;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheelDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

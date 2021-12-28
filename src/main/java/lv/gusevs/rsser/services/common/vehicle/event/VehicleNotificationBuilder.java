@@ -1,7 +1,7 @@
-package lv.gusevs.rsser.services.ss.vehicle.event;
+package lv.gusevs.rsser.services.common.vehicle.event;
 
 import lv.gusevs.rsser.event.subscribers.Notification;
-import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.common.vehicle.data.Vehicle;
 import org.springframework.stereotype.Component;
 
 import static lv.gusevs.rsser.utilities.TextHelper.nvl;

@@ -1,8 +1,7 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
+package lv.gusevs.rsser.services.common.vehicle.wheels.data;
 
 import com.google.common.eventbus.EventBus;
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
-import lv.gusevs.rsser.services.ss.vehicle.wheels.event.NewVehicleWheelNotification;
+import lv.gusevs.rsser.services.common.vehicle.wheels.event.NewVehicleWheelNotification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;

@@ -1,7 +1,7 @@
-package lv.gusevs.rsser.services.ss.vehicle;
+package lv.gusevs.rsser.services.common.vehicle;
 
-import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
-import lv.gusevs.rsser.services.ss.vehicle.data.VehicleDataService;
+import lv.gusevs.rsser.services.common.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.common.vehicle.data.VehicleDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
+package lv.gusevs.rsser.services.common.vehicle.wheels.data;
 
 import lombok.Getter;
 import lombok.Setter;

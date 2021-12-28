@@ -1,4 +1,4 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels.event;
+package lv.gusevs.rsser.services.common.vehicle.event;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-class NewVehicleWheelNotificationSubscriber {
+class NewVehicleNotificationSubscriber {
 
     private final EventBus eventBus;
-    private final VehicleWheelNotificationBuilder notificationBuilder;
+    private final VehicleNotificationBuilder notificationBuilder;
 
     @Autowired
-    NewVehicleWheelNotificationSubscriber(EventBus eventBus,
-                                          VehicleWheelNotificationBuilder notificationBuilder) {
+    NewVehicleNotificationSubscriber(EventBus eventBus,
+                                     VehicleNotificationBuilder notificationBuilder) {
         this.eventBus = eventBus;
         this.notificationBuilder = notificationBuilder;
     }
@@ -27,8 +27,8 @@ class NewVehicleWheelNotificationSubscriber {
     }
 
     @Subscribe
-    private void sendMessage(NewVehicleWheelNotification vehicleWheelNotification) {
-        Notification notification = notificationBuilder.notificationOf(vehicleWheelNotification.getVehicleWheel());
+    private void sendMessage(NewVehicleNotification vehicleNotification) {
+        Notification notification = notificationBuilder.notificationOf(vehicleNotification.getVehicle());
         eventBus.post(notification);
     }
 

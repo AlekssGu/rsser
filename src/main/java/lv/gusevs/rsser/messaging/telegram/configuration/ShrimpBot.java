@@ -21,6 +21,6 @@ public class ShrimpBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        throw new RuntimeException("Update was received but the functionality is not implemented yet: " + update);
     }
 }

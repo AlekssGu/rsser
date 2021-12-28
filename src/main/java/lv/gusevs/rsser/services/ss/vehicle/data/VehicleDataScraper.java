@@ -1,5 +1,7 @@
 package lv.gusevs.rsser.services.ss.vehicle.data;
 
+import lv.gusevs.rsser.services.common.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.common.vehicle.data.VehicleDataService;
 import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;

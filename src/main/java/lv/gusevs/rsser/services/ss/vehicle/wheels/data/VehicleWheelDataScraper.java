@@ -1,6 +1,7 @@
 package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
 
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheel;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheelDataService;
 import lv.gusevs.rsser.utilities.XmlReader;
 import org.dom4j.Document;
 import org.dom4j.Node;

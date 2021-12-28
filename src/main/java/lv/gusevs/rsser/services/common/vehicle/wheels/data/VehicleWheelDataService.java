@@ -1,6 +1,4 @@
-package lv.gusevs.rsser.services.ss.vehicle.wheels.data;
-
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
+package lv.gusevs.rsser.services.common.vehicle.wheels.data;
 
 import java.util.List;
 

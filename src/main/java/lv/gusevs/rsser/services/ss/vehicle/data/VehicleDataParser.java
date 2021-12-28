@@ -1,5 +1,6 @@
 package lv.gusevs.rsser.services.ss.vehicle.data;
 
+import lv.gusevs.rsser.services.common.vehicle.data.Vehicle;
 import lv.gusevs.rsser.utilities.DateHelper;
 import org.dom4j.Node;
 import org.springframework.stereotype.Component;

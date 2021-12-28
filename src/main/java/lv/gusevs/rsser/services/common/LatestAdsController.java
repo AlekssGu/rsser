@@ -1,9 +1,9 @@
-package lv.gusevs.rsser.services.ss;
+package lv.gusevs.rsser.services.common;
 
-import lv.gusevs.rsser.services.ss.vehicle.VehicleService;
-import lv.gusevs.rsser.services.ss.vehicle.data.Vehicle;
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheel;
-import lv.gusevs.rsser.services.ss.vehicle.wheels.VehicleWheelService;
+import lv.gusevs.rsser.services.common.vehicle.VehicleService;
+import lv.gusevs.rsser.services.common.vehicle.data.Vehicle;
+import lv.gusevs.rsser.services.common.vehicle.wheels.data.VehicleWheel;
+import lv.gusevs.rsser.services.common.vehicle.wheels.VehicleWheelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ss")
-class SsServiceController {
+class LatestAdsController {
 
 	private final VehicleService vehicleService;
 	private final VehicleWheelService vehicleWheelService;
 
 	@Autowired
-	SsServiceController(VehicleService vehicleService,
+	LatestAdsController(VehicleService vehicleService,
 						VehicleWheelService vehicleWheelService) {
 		this.vehicleService = vehicleService;
 		this.vehicleWheelService = vehicleWheelService;

@@ -1,4 +1,4 @@
-package lv.gusevs.rsser.services.ss.vehicle.data;
+package lv.gusevs.rsser.services.common.vehicle.data;
 
 import lombok.Builder;
 import lombok.Getter;
