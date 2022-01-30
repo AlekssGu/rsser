@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @Component
 class DefaultVehicleDataService implements VehicleDataService {
 
+    private static final Sort SORT_BY_ID_DESCENDING = Sort.by(Sort.Order.desc("id"));
+
     private final VehicleRepository vehicleRepository;
     private final EventBus eventBus;
 
@@ -45,7 +47,7 @@ class DefaultVehicleDataService implements VehicleDataService {
     }
 
     private List<VehicleData> latestVehicleData() {
-        return vehicleRepository.findAll(Sort.by(Sort.Order.desc("id")));
+        return vehicleRepository.findAll(SORT_BY_ID_DESCENDING);
     }
 
     private void postNotificationAbout(Vehicle vehicle) {

@@ -27,7 +27,7 @@ class NewVehicleNotificationSubscriber {
     }
 
     @Subscribe
-    private void sendMessage(NewVehicleNotification vehicleNotification) {
+    void sendMessage(NewVehicleNotification vehicleNotification) {
         Notification notification = notificationBuilder.notificationOf(vehicleNotification.getVehicle());
         eventBus.post(notification);
     }

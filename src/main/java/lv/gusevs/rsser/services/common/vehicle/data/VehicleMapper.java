@@ -3,18 +3,18 @@ package lv.gusevs.rsser.services.common.vehicle.data;
 class VehicleMapper {
 
     static VehicleData mapToData(Vehicle vehicle) {
-        VehicleData vehicleData = new VehicleData();
-        vehicleData.setLink(vehicle.getLink());
-        vehicleData.setDescription(vehicle.getDescription());
-        vehicleData.setMake(vehicle.getMake());
-        vehicleData.setModel(vehicle.getModel());
-        vehicleData.setPrice(vehicle.getPrice());
-        vehicleData.setDatePublished(vehicle.getDatePublished());
-        vehicleData.setMileage(vehicle.getMileage());
-        vehicleData.setMakeYear(vehicle.getMakeYear());
-        vehicleData.setMotorCapacity(vehicle.getMotorCapacity());
-        vehicleData.setImageUrl(vehicle.getImageUrl());
-        return vehicleData;
+        return VehicleData.builder()
+                .link(vehicle.getLink())
+                .description(vehicle.getDescription())
+                .make(vehicle.getMake())
+                .model(vehicle.getModel())
+                .price(vehicle.getPrice())
+                .datePublished(vehicle.getDatePublished())
+                .mileage(vehicle.getMileage())
+                .makeYear(vehicle.getMakeYear())
+                .motorCapacity(vehicle.getMotorCapacity())
+                .imageUrl(vehicle.getImageUrl())
+                .build();
     }
 
     static Vehicle toVehicle(VehicleData vehicleData) {
