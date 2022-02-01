@@ -3,13 +3,13 @@ package lv.gusevs.rsser.services.common.vehicle.wheels.data;
 class VehicleWheelMapper {
 
     static VehicleWheelData mapToData(VehicleWheel vehicleWheel) {
-        VehicleWheelData vehicleWheelData = new VehicleWheelData();
-        vehicleWheelData.setDatePublished(vehicleWheel.getDatePublished());
-        vehicleWheelData.setLink(vehicleWheel.getLink());
-        vehicleWheelData.setPrice(vehicleWheel.getPrice());
-        vehicleWheelData.setDescription(vehicleWheel.getDescription());
-        vehicleWheelData.setImageUrl(vehicleWheel.getImageUrl());
-        return vehicleWheelData;
+        return VehicleWheelData.builder()
+                .datePublished(vehicleWheel.getDatePublished())
+                .link(vehicleWheel.getLink())
+                .price(vehicleWheel.getPrice())
+                .description(vehicleWheel.getDescription())
+                .imageUrl(vehicleWheel.getImageUrl())
+                .build();
     }
 
     static VehicleWheel toVehicleWheel(VehicleWheelData vehicleWheelData) {

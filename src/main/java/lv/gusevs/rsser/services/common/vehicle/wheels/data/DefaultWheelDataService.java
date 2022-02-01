@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 class DefaultWheelDataService implements VehicleWheelDataService {
+    private static final Sort SORT_BY_ID_DESCENDING = Sort.by(Sort.Order.desc("id"));
 
     private final VehicleWheelRepository vehicleWheelRepository;
     private final EventBus eventBus;
@@ -25,7 +26,7 @@ class DefaultWheelDataService implements VehicleWheelDataService {
 
     @Override
     public List<VehicleWheel> getLatest() {
-        return vehicleWheelRepository.findAll(Sort.by(Sort.Order.desc("id")))
+        return vehicleWheelRepository.findAll(SORT_BY_ID_DESCENDING)
                 .stream()
                 .map(VehicleWheelMapper::toVehicleWheel)
                 .collect(Collectors.toList());

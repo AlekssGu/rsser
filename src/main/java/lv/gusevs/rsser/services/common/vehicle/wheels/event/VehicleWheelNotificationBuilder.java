@@ -13,15 +13,15 @@ class VehicleWheelNotificationBuilder {
 
     private Notification buildNotification(VehicleWheel vehicleWheel) {
         return Notification.builder()
-                .subject("Jauni diski!")
+                .subject("New wheel ad!")
                 .message(messageOf(vehicleWheel))
-                .action("\nApskatīt: " + vehicleWheel.getLink())
+                .action("\nShow more: " + vehicleWheel.getLink())
                 .imageUrl(vehicleWheel.getImageUrl())
                 .build();
     }
 
     private String messageOf(VehicleWheel vehicleWheel) {
-        return "Cena: " + vehicleWheel.getPrice() + "\n" +
+        return "Price: " + vehicleWheel.getPrice() + "\n" +
                 vehicleWheel.getDescription() + "\n" +
                 vehicleWheel.getImageUrl();
     }

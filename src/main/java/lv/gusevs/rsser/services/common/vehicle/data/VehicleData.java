@@ -1,6 +1,7 @@
 package lv.gusevs.rsser.services.common.vehicle.data;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode
 class VehicleData {
 
     @Id

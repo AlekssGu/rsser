@@ -15,17 +15,17 @@ class VehicleNotificationBuilder {
 
     private Notification buildNotification(Vehicle vehicle) {
         return Notification.builder()
-                .subject("Jauns sludinājums!")
+                .subject("New ad!")
                 .message(prepareMessageText(vehicle))
-                .action("\nApskatīt: " + vehicle.getLink())
+                .action("\nShow more: " + vehicle.getLink())
                 .imageUrl(vehicle.getImageUrl())
                 .build();
     }
 
     private String prepareMessageText(Vehicle vehicle) {
-        return "Automašīna: " + vehicleInfo(vehicle) + "\n" +
-                "Gads: " + vehicle.getMakeYear() + "\n" +
-                "Cena: " + vehicle.getPrice() + "\n" +
+        return "Vehicle: " + vehicleInfo(vehicle) + "\n" +
+                "Make year: " + vehicle.getMakeYear() + "\n" +
+                "Price: " + vehicle.getPrice() + "\n" +
                 vehicle.getImageUrl();
     }
 

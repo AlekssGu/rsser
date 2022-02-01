@@ -15,10 +15,6 @@ import static org.mockito.BDDMockito.then;
 @RunWith(MockitoJUnitRunner.class)
 public class NewVehicleNotificationSubscriberTest {
 
-    private static final String MESSAGE = "some message";
-    private static final String ACTION = "some action";
-    private static final String NOTIFICATION_MESSAGE = MESSAGE + "\n" + ACTION;
-
     @Mock
     private EventBus eventBus;
     @Mock
