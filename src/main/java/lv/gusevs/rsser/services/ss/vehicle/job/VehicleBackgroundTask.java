@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 class VehicleBackgroundTask {
 
+    private static final long ONE_HOUR_IN_MILLIS = 3600000;
+
     private final VehicleDataScraper vehicleDataScraper;
 
     @Autowired
@@ -15,8 +17,8 @@ class VehicleBackgroundTask {
         this.vehicleDataScraper = vehicleDataScraper;
     }
 
-    @Scheduled(fixedRate = 60000)
-    public void reportCurrentTime() {
+    @Scheduled(fixedRate = ONE_HOUR_IN_MILLIS)
+    public void scrapeNewAds() {
         vehicleDataScraper.scrapeNewAds();
     }
 
