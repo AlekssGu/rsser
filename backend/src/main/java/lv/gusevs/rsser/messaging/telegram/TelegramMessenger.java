@@ -32,7 +32,7 @@ public class TelegramMessenger {
     }
 
     private String chatId() {
-        return System.getProperty("TELEGRAM_CHAT_ID");
+        return System.getenv("TELEGRAM_CHAT_ID");
     }
 
 }

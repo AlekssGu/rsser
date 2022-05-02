@@ -16,7 +16,7 @@ public class ShrimpBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return System.getProperty("TELEGRAM_BOT_TOKEN");
+        return System.getenv("TELEGRAM_BOT_TOKEN");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class VehicleDataScraper {
     private final VehicleDataParser vehicleDataParser;
     private final VehicleDataService vehicleDataService;
 
-    @Value("#{new Boolean('${system.vehicle_scraper_enabled}')}")
+    @Value("#{new Boolean('${application.scraper.ss.vehicle.enabled}')}")
     private boolean vehicleScraperEnabled;
 
     @Autowired

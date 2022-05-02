@@ -21,7 +21,7 @@ public class VehicleWheelDataScraper {
     private final VehicleWheelDataParser vehicleWheelDataParser;
     private final VehicleWheelDataService vehicleWheelDataService;
 
-    @Value("#{new Boolean('${system.vehicle_wheel_scraper_enabled}')}")
+    @Value("#{new Boolean('${application.scraper.ss.vehicle_wheel.enabled}')}")
     private boolean vehicleWheelScraperEnabled;
 
     @Autowired

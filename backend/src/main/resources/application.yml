@@ -1,0 +1,7 @@
+application:
+  scraper:
+    ss:
+      vehicle:
+        enabled: false
+      vehicle_wheel:
+        enabled: false
